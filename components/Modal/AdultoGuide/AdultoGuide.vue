@@ -108,7 +108,7 @@ const alternative = computed(() => {
         <ol class="adulto-guide__steps">
           <li v-for="(step, index) in section.steps || []" :key="`${section.number}-${index}`" v-html="step"></li>
         </ol>
-        <!-- <div
+        <div
           v-if="section.images.length"
           class="adulto-guide__images"
           :class="{ 'adulto-guide__images--stacked': section.number === '3' }"
@@ -126,7 +126,7 @@ const alternative = computed(() => {
             quality="85"
             class="adulto-guide__image"
           />
-        </div> -->
+        </div>
         <p v-if="section.note" class="adulto-guide__note">{{ section.note }}</p>
         <div v-if="section.tips?.length" class="adulto-guide__tip-list">
           <p v-for="(tip, index) in section.tips" :key="`${section.number}-tip-${index}`">{{ tip }}</p>
