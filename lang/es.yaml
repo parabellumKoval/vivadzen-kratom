@@ -536,9 +536,9 @@ kratom:
   header:
     store: 'Tienda de kratom'
   footer:
-    eyebrow: 'Mini-tienda VivaDzen'
-    title: 'Kratom para el mercado checo'
-    text: 'Una tienda enfocada sobre el mismo backend y la misma lógica de catálogo, reducida a lo esencial: kratom, artículos, compra y soporte.'
+    eyebrow: 'VivaDzen kratom'
+    title: 'Kratom selecto certificado'
+    text: 'El kratom legal de VivaDzen ofrece variedades cuidadosamente seleccionadas, productos certificados, calidad constante y origen verificado en cada lote.'
     legal: 'Información'
   region_switcher:
     eyebrow: 'Tiendas regionales'

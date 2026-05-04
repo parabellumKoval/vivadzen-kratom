@@ -596,9 +596,9 @@ kratom:
     store: 'Kratom Store'
     entheogens_cta: 'Our entheogens store'
   footer:
-    eyebrow: 'VivaDzen mini-store'
-    title: 'Kratom curated for the Czech market'
-    text: 'One focused storefront on the same backend and catalog logic, trimmed down to essentials: kratom, articles, checkout, and support.'
+    eyebrow: 'VivaDzen kratom'
+    title: 'Selected certified kratom'
+    text: 'Legal VivaDzen kratom means carefully selected varieties, certified products, consistent quality, and verified origin for every batch.'
     legal: 'Information'
   region_switcher:
     eyebrow: 'Regional storefronts'

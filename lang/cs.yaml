@@ -591,9 +591,9 @@ kratom:
     store: 'Kratom obchod'
     entheogens_cta: 'Náš web s entheogeny'
   footer:
-    eyebrow: 'VivaDzen mini-store'
-    title: 'Kratom pro český trh'
-    text: 'Jeden specializovaný obchod na stejném backendu a katalogové logice, zúžený jen na to podstatné: kratom, články, objednávku a podporu.'
+    eyebrow: 'VivaDzen kratom'
+    title: 'Výběrový certifikovaný kratom'
+    text: 'Legální kratom VivaDzen znamená pečlivě vybrané odrůdy, certifikované produkty, stálou kvalitu a ověřený původ každé šarže.'
     legal: 'Informace'
   region_switcher:
     eyebrow: 'Regionální obchody'
