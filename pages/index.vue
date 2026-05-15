@@ -121,9 +121,9 @@ useSeo().setPageSeo('home', {
     <div id="origins" class="page-reveal-section">
       <section-landing-kratom-variety-origins />
     </div>
-    <div id="sample" class="page-reveal-section">
+    <!-- <div id="sample" class="page-reveal-section">
       <section-landing-sample-set />
-    </div>
+    </div> -->
     <div id="bonus" class="page-reveal-section">
       <section-landing-referral-bonus />
     </div>
