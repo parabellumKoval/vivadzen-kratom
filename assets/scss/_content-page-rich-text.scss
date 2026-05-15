@@ -1,0 +1,44 @@
+@use './rich-text' as *;
+@use './mixins' as *;
+
+.kratom-content-shell {
+  padding-top: 24px;
+}
+
+.kratom-content-card {
+  padding: 28px 20px;
+  border: 1px solid rgba(74, 91, 68, 0.1);
+  border-radius: 24px;
+  background: rgba(255, 250, 244, 0.92);
+  box-shadow: 0 20px 50px rgba(34, 32, 24, 0.06);
+
+  @include tablet {
+    padding: 32px;
+  }
+
+  @include desktop {
+    padding: 40px 48px;
+  }
+
+  :deep(h2),
+  :deep(h3),
+  :deep(h4) {
+    color: #253121;
+  }
+
+  :deep(p),
+  :deep(li) {
+    color: rgba(37, 49, 33, 0.82);
+  }
+
+  :deep(ol),
+  :deep(ul) {
+    margin-top: 24px;
+    margin-bottom: 24px;
+  }
+
+  :deep(table) {
+    display: block;
+    overflow-x: auto;
+  }
+}
