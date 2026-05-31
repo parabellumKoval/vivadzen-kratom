@@ -20,7 +20,8 @@ const escapeHtml = (value: unknown) => String(value || '')
   .replace(/'/g, '&#39;')
 
 const deliveryDescription = (key: string) => {
-  const description = content?.[key]
+  // Express переиспользует описание обычного messenger.
+  const description = content?.[key] ?? (key === 'messenger_express' ? content?.messenger_address : undefined)
   if (typeof description !== 'string') return ''
 
   if (key === 'default_pickup' && pickupLocations.value.length) {
@@ -100,7 +101,7 @@ const items = computed(() => {
       image: method.image || method.logo,
       description: deliveryDescription(method.key),
       meta: normalizeMeta(method),
-      sections: method.key === 'messenger_address' ? messengerSections.value : [],
+      sections: (method.key === 'messenger_address' || method.key === 'messenger_express') ? messengerSections.value : [],
     }))
   }
 

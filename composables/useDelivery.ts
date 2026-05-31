@@ -1,5 +1,6 @@
 
 import {
+  buildDisplayPrice,
   normalizeStructuredArray,
   resolveCurrencyCode,
   resolveRateDisplayPrice,
@@ -107,6 +108,20 @@ export const useDelivery = () => {
     })
   })
 
+  const messengerExpressEnabled = computed(() => Boolean(get('shipping.messenger.express.enabled', false)))
+
+  const messengerExpressSurcharge = computed(() => {
+    const value = Number(get('shipping.messenger.express.surcharge', 200))
+    return Number.isFinite(value) ? value : 200
+  })
+
+  // Express = тот же тариф messenger + плоская надбавка (без нового провайдера).
+  const messengerExpressPrice = computed(() => {
+    const base = messengerAddressPrice.value
+    if (!base) return null
+    return buildDisplayPrice(base.amount + messengerExpressSurcharge.value, base.currency, fallbackCurrency.value)
+  })
+
   const defaultPrice = (methodKey = 'pickup') => {
     switch (methodKey) {
       case 'pickup':
@@ -121,6 +136,8 @@ export const useDelivery = () => {
         return novaposhtaCourierPrice.value
       case 'messenger_address':
         return messengerAddressPrice.value
+      case 'messenger_express':
+        return messengerExpressPrice.value
       default:
         return null
     }
@@ -132,6 +149,7 @@ export const useDelivery = () => {
     const novaposhtaWarehouse = novaposhtaWarehousePrice.value
     const novaposhtaCourier = novaposhtaCourierPrice.value
     const messengerAddress = messengerAddressPrice.value
+    const messengerExpress = messengerExpressPrice.value
 
     return [
       {
@@ -199,6 +217,18 @@ export const useDelivery = () => {
         isMetaPriceObject: !!messengerAddress
       },
       {
+        key: 'messenger_express',
+        title: t('delivery.messenger_express'),
+        label: t('delivery.messenger_express'),
+        icon: 'iconoir:fast-arrow-right',
+        image: '/images/logo/messenger-express.png',
+        logo: '/images/logo/messenger-express.png',
+        price: messengerExpress || providerTariffsLabel.value,
+        isPriceObject: !!messengerExpress,
+        meta: messengerExpress || providerTariffsLabel.value,
+        isMetaPriceObject: !!messengerExpress
+      },
+      {
         key: 'default_address',
         title: t('delivery.default_address'),
         label: t('delivery.address'),
@@ -219,7 +249,19 @@ export const useDelivery = () => {
 
   const deliveryMethods = computed(() => {
     const methodKeys = get('shipping.methods') || []
-    return methods.value.filter(method => methodKeys.includes(method.key))
+    const list = methods.value.filter(method => methodKeys.includes(method.key))
+
+    // Express не отдельный метод в shipping.methods — показывается рядом с
+    // messenger_address, когда включён тоггл в настройках Messenger.cz.
+    if (messengerExpressEnabled.value) {
+      const messengerIndex = list.findIndex(method => method.key === 'messenger_address')
+      const express = methods.value.find(method => method.key === 'messenger_express')
+      if (messengerIndex !== -1 && express && !list.some(method => method.key === 'messenger_express')) {
+        list.splice(messengerIndex + 1, 0, express)
+      }
+    }
+
+    return list
   })
 
 

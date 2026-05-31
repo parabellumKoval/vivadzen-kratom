@@ -2,6 +2,7 @@
 import { storeToRefs } from 'pinia'
 import { useDeliveryStore } from '~/store/delivery'
 import { useCartStore } from '~/store/cart'
+import { roundDownShippingAmount } from '~/utils/shipping-pricing'
 
 const { t } = useI18n()
 const { currency, region } = useRegion()
@@ -21,7 +22,7 @@ const deliveryPayload = computed(() => {
 
   const methodKey = order.value?.delivery?.method
   const destinationCountry = region.value
-  const isMessengerCod = methodKey === 'messenger_address' && order.value?.payment?.method === 'messenger_cod'
+  const isMessengerCod = (methodKey === 'messenger_address' || methodKey === 'messenger_express') && order.value?.payment?.method === 'messenger_cod'
 
   if (!methodKey || !destinationCountry) {
     return null
@@ -76,6 +77,41 @@ const basePrice = computed(() => {
   }
 })
 
+// Доплата за наложенный платёж приходит отдельно в breakdown.cod_gross —
+// показываем её отдельной строкой, а не внутри стоимости доставки.
+const codFee = computed(() => {
+  if (!isDeliveryCostEnabled.value) return null
+
+  const quote = deliveryPrice.value as any
+
+  // При бесплатной доставке сервер обнуляет всю стоимость (включая COD).
+  if (quote?.breakdown?.free_shipping) return null
+
+  const codGross = Number(quote?.breakdown?.cod_gross)
+
+  if (!Number.isFinite(codGross) || codGross <= 0) return null
+
+  const baseCurrency = quote?.currency || currency.value
+  if (!baseCurrency) return null
+
+  return {
+    amount: roundDownShippingAmount(codGross),
+    currency: baseCurrency,
+  }
+})
+
+// Стоимость доставки без доплаты за наложенный платёж.
+const deliveryOnlyPrice = computed(() => {
+  if (!basePrice.value) return null
+
+  const cod = codFee.value?.amount || 0
+
+  return {
+    amount: Math.max(0, basePrice.value.amount - cod),
+    currency: basePrice.value.currency,
+  }
+})
+
 if (process.client) {
   watch(
     deliveryPayload,
@@ -106,18 +142,11 @@ if (process.client) {
   )
 
   watch(
-    [basePrice, deliveryPrice],
-    ([price, quote]) => {
-      if (!price) {
-        cartStore.setDeliveryPricing({ price: null, quote })
-        return
-      }
-
+    [deliveryOnlyPrice, codFee, deliveryPrice],
+    ([price, cod, quote]) => {
       cartStore.setDeliveryPricing({
-        price: {
-          amount: price.amount,
-          currency: price.currency,
-        },
+        price: price ? { amount: price.amount, currency: price.currency } : null,
+        cod: cod ? { amount: cod.amount, currency: cod.currency } : null,
         quote,
       })
     },
@@ -134,12 +163,22 @@ if (process.client) {
       <div class="sale-label">{{ t('messages.delivery_price') }}</div>
       <div class="sale-value">
         <simple-price
-          v-if="basePrice"
-          :value="basePrice.amount"
-          :currency-code="basePrice.currency"
+          v-if="deliveryOnlyPrice"
+          :value="deliveryOnlyPrice.amount"
+          :currency-code="deliveryOnlyPrice.currency"
           class="price"
         ></simple-price>
         <span v-else>—</span>
+      </div>
+    </div>
+    <div v-if="isDeliveryCostEnabled && codFee" class="sale-item">
+      <div class="sale-label">{{ t('messages.cod_fee') }}</div>
+      <div class="sale-value">
+        <simple-price
+          :value="codFee.amount"
+          :currency-code="codFee.currency"
+          class="price"
+        ></simple-price>
       </div>
     </div>
   </ClientOnly>

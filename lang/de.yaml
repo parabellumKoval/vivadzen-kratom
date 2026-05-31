@@ -123,6 +123,7 @@ messages:
   cart_item_unavailable: Produkt in Ihrer Region nicht verfügbar
   leave_review: Bewertung hinterlassen
   delivery_price: Lieferkosten
+  cod_fee: Nachnahme
   delivery_vendor_price: Nach Tarifen des Versanddienstes
   products_total: Warenwert
   to_pay: Zu zahlen
@@ -253,6 +254,7 @@ form:
     packeta_warehouse: Zasilkovna-Filiale/Paketautomat
     packeta_address: Zasilkovna-Kurierzustellung
     messenger_address: Messenger.cz-Kurierzustellung
+    messenger_express: Messenger.cz-Express-Zustellung
     default_pickup: Abholung
     default_address: Postzustellung
   payment:
@@ -402,6 +404,7 @@ delivery:
   novaposhta_warehouse: Nova-Poshta-Filiale/Paketautomat
   novaposhta_address: Per Nova-Poshta-Kurier
   messenger_address: Per Messenger.cz-Kurier
+  messenger_express: Per Messenger.cz-Express-Kurier
   default_pickup: Abholung
   from: ab
   subtitle: Liefermethoden hängen vom gewählten Land ab. Ändern Sie das Lieferland, um verfügbare Optionen zu sehen.
@@ -430,6 +433,8 @@ payments:
   messenger_cod:
     title: Messenger.cz-Nachnahme
     desc: Bei Erhalt per Karte oder bar bezahlen
+    fee_label: 'Nachnahmegebühr:'
+    up_to: bis
   bank_transfer:
     title: Banküberweisung
     desc: Wir senden Ihnen per E-Mail die Zahlungsdaten inklusive Variablem Symbol. Sie können den Auftrag auch per QR-Code erstellen.

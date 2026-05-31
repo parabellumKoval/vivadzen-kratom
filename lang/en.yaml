@@ -134,6 +134,7 @@ messages:
   cart_item_unavailable: Product unavailable in your region
   leave_review: Leave a review
   delivery_price: Delivery cost
+  cod_fee: Cash on delivery
   delivery_vendor_price: According to the carrier rates
   products_total: Items total
   to_pay: Amount due
@@ -266,6 +267,7 @@ form:
     packeta_warehouse: Zasilkovna branch/parcel locker
     packeta_address: Zasilkovna courier delivery
     messenger_address: Messenger.cz courier delivery
+    messenger_express: Messenger.cz express delivery
     default_pickup: Pickup
     default_address: Postal delivery
   payment:
@@ -470,6 +472,7 @@ delivery:
   novaposhta_warehouse: Nova Poshta branch/locker
   novaposhta_address: By Nova Poshta courier
   messenger_address: By Messenger.cz courier
+  messenger_express: By Messenger.cz express courier
   default_pickup: Pickup
   from: from
   subtitle: Delivery methods depend on the selected country. Change the delivery country to see options for your region.
@@ -498,6 +501,8 @@ payments:
   messenger_cod:
     title: Messenger.cz cash on delivery
     desc: Pay by card or cash upon receipt
+    fee_label: 'Cash on delivery fee:'
+    up_to: up to
   bank_transfer:
     title: Bank transfer
     desc: We will email you the payment details you need, including the variable symbol required for the transfer. You can also create the payment order by scanning a QR code.

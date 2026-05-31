@@ -30,6 +30,7 @@ const calculableDeliveryKeys = new Set([
   'novaposhta_warehouse',
   'novaposhta_address',
   'messenger_address',
+  'messenger_express',
 ])
 
 const destinationCountry = computed(() => String(region.value || '').trim().toUpperCase())

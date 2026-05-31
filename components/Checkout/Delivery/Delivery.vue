@@ -85,8 +85,8 @@ const deliveryMethod = computed({
       <div v-else-if="order.delivery.method === 'default_pickup'" class="form-grid">
         <checkout-delivery-providers-default-pickup></checkout-delivery-providers-default-pickup>
       </div>
-      <!-- Messenger delivery -->
-      <div v-else-if="order.delivery.method === 'messenger_address'" class="form-grid">
+      <!-- Messenger delivery (standard + express share the same address form) -->
+      <div v-else-if="order.delivery.method === 'messenger_address' || order.delivery.method === 'messenger_express'" class="form-grid">
         <CheckoutDeliveryProvidersMessengerAddress />
       </div>
       <!-- Address delivery -->

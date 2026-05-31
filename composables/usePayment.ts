@@ -105,15 +105,8 @@ export const usePayment = () => {
     return fixedLabel
   })
 
-  const messengerCodMeta = computed(() => {
-    return resolveFixedFeeDisplayPrice({
-      amount: get('shipping.messenger.cod.cash_fee'),
-      currency: get('shipping.messenger.currency'),
-      fallbackCurrency: fallbackCurrency.value,
-      vatRate: get('shipping.messenger.vat_rate'),
-      vatIncluded: get('shipping.messenger.vat_included'),
-    })
-  })
+  const { fee: messengerCodFee } = useMessengerCod()
+  const messengerCodMeta = computed(() => messengerCodFee.value)
 
   const methods = computed(() => ([
     {
@@ -167,7 +160,7 @@ export const usePayment = () => {
       icon: 'iconoir:credit-cards',
       image: '/images/logo/online-payments.png',
       logo: '/images/logo/online-payments.png',
-      payments: ['packeta_warehouse', 'packeta_address', 'novaposhta_warehouse', 'novaposhta_address', 'default_address', 'default_pickup', 'messenger_address'],
+      payments: ['packeta_warehouse', 'packeta_address', 'novaposhta_warehouse', 'novaposhta_address', 'default_address', 'default_pickup', 'messenger_address', 'messenger_express'],
       meta: zeroFeeLabel.value,
       isMetaPriceObject: false,
     },
@@ -189,7 +182,7 @@ export const usePayment = () => {
       icon: 'iconoir:bank',
       image: '/images/logo/bank.png',
       logo: '/images/logo/company-mini.png',
-      payments: ['packeta_warehouse', 'packeta_address', 'default_address', 'default_pickup', 'messenger_address'],
+      payments: ['packeta_warehouse', 'packeta_address', 'default_address', 'default_pickup', 'messenger_address', 'messenger_express'],
       meta: zeroFeeLabel.value,
       isMetaPriceObject: false,
     },
@@ -200,7 +193,7 @@ export const usePayment = () => {
       icon: 'iconoir:delivery-truck',
       image: '/images/logo/messenger.svg',
       logo: '/images/logo/messenger.svg',
-      payments: ['messenger_address'],
+      payments: ['messenger_address', 'messenger_express'],
       meta: messengerCodMeta.value,
       isMetaPriceObject: !!messengerCodMeta.value,
     }

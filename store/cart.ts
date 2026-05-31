@@ -73,6 +73,7 @@ export const useCartStore = defineStore('cartStore', {
     promocodeData: null,
 
     deliveryPriceState: null as { amount: number; currency: string } | null,
+    codPriceState: null as { amount: number; currency: string } | null,
     deliveryQuoteState: null as unknown,
 
     rulesState: {}
@@ -137,10 +138,12 @@ export const useCartStore = defineStore('cartStore', {
       const { get } = useSettings()
       const includeDeliveryCost = !!get('shipping.add_to_order_enabled', false)
       const deliveryCost = includeDeliveryCost ? (state.deliveryPriceState?.amount || 0) : 0
-      return useCartStore().total + deliveryCost
+      const codCost = includeDeliveryCost ? (state.codPriceState?.amount || 0) : 0
+      return useCartStore().total + deliveryCost + codCost
     },
     order: (state) => state.orderState,
     deliveryPrice: (state) => state.deliveryPriceState,
+    codPrice: (state) => state.codPriceState,
     deliveryQuote: (state) => state.deliveryQuoteState,
     errors: (state) => state.errorsState,
     filled: (state) => {
@@ -167,7 +170,7 @@ export const useCartStore = defineStore('cartStore', {
     },
     flash: (state) => state.flashOrder,
     isAddressCollected: (state) => {
-      const methodsWithFullAddress = ['novaposhta_address', 'packeta_address', 'messenger_address', 'default_address']
+      const methodsWithFullAddress = ['novaposhta_address', 'packeta_address', 'messenger_address', 'messenger_express', 'default_address']
       const method = state.orderState.delivery.method
 
       if(method && methodsWithFullAddress.includes(method)) return true
@@ -204,23 +207,21 @@ export const useCartStore = defineStore('cartStore', {
       this.orderState.delivery = fields
     },
 
-    setDeliveryPricing(payload?: { price?: { amount: number; currency: string } | null; quote?: unknown }) {
-      const price = payload?.price ?? null
-      if (!price) {
-        this.deliveryPriceState = null
-        this.deliveryQuoteState = payload?.quote ?? null
-        return
+    setDeliveryPricing(payload?: {
+      price?: { amount: number; currency: string } | null;
+      cod?: { amount: number; currency: string } | null;
+      quote?: unknown
+    }) {
+      const normalize = (value?: { amount: number; currency: string } | null) => {
+        if (!value) return null
+        const amount = Number(value.amount)
+        const currency = value.currency || null
+        if (!Number.isFinite(amount) || !currency) return null
+        return { amount, currency }
       }
 
-      const amount = Number(price.amount)
-      const currency = price.currency || null
-
-      if (!Number.isFinite(amount) || !currency) {
-        this.deliveryPriceState = null
-      } else {
-        this.deliveryPriceState = { amount, currency }
-      }
-
+      this.deliveryPriceState = normalize(payload?.price)
+      this.codPriceState = normalize(payload?.cod)
       this.deliveryQuoteState = payload?.quote ?? null
     },
 
@@ -314,6 +315,7 @@ export const useCartStore = defineStore('cartStore', {
     clearCart() {
       this.data = []
       this.deliveryPriceState = null
+      this.codPriceState = null
       this.deliveryQuoteState = null
       this.orderState.delivery.price = null
       this.orderState.delivery.priceCurrency = null

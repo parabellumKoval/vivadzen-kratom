@@ -129,6 +129,7 @@ messages:
   cart_item_unavailable: Товар недоступний у вашому регіоні
   leave_review: Залишити відгук
   delivery_price: Вартість доставки
+  cod_fee: Накладений платіж
   delivery_vendor_price: За тарифами перевізника
   products_total: Товарів на суму
   to_pay: До оплати
@@ -261,6 +262,7 @@ form:
     packeta_warehouse: Відділення/поштомат Zasilkovna
     packeta_address: Курʼєром Zasilkovna
     messenger_address: Доставка курʼєром Messenger.cz
+    messenger_express: Експрес-доставка Messenger.cz
     default_pickup: Самовивіз
     default_address: Доставка поштою
   payment:
@@ -465,6 +467,7 @@ delivery:
   novaposhta_warehouse: Відділення/поштомат Нової Пошти
   novaposhta_address: Курʼєром Нової Пошти
   messenger_address: Курʼєром Messenger.cz
+  messenger_express: Експрес-курʼєром Messenger.cz
   default_pickup: Самовивіз
   from: від
   subtitle: Способи доставки залежать від вибраної країни. Змініть країну доставки, щоб побачити варіанти для вашого регіону.
@@ -493,6 +496,8 @@ payments:
   messenger_cod:
     title: Накладений платіж Messenger.cz
     desc: Оплата карткою або готівкою при отриманні
+    fee_label: 'Комісія за накладений платіж:'
+    up_to: до
   bank_transfer:
     title: Банківський переказ
     desc: Ми надішлемо лист із платіжними реквізитами, включно з варіабельним символом, який потрібно вказати. Платіж можна оформити також за QR-кодом.

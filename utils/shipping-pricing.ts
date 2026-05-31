@@ -132,6 +132,38 @@ export const resolveRateDisplayPrice = (options: {
   return buildDisplayPrice(gross, options.currency, options.fallbackCurrency)
 }
 
+export interface CodCashTier {
+  maxAmount: number
+  fee: number
+}
+
+export const normalizeCodCashTiers = (tiersValue: unknown): CodCashTier[] => {
+  return normalizeStructuredArray(tiersValue)
+    .map((tier) => ({
+      maxAmount: toFiniteNumber(tier?.max_amount),
+      fee: toFiniteNumber(tier?.fee),
+    }))
+    .filter((tier): tier is CodCashTier =>
+      tier.maxAmount !== null && tier.maxAmount > 0 && tier.fee !== null)
+    .sort((a, b) => a.maxAmount - b.maxAmount)
+}
+
+export const pickCodCashTierFee = (tiersValue: unknown, orderAmount: number): number | null => {
+  const tiers = normalizeCodCashTiers(tiersValue)
+
+  if (!tiers.length) {
+    return null
+  }
+
+  for (const tier of tiers) {
+    if (orderAmount <= tier.maxAmount) {
+      return tier.fee
+    }
+  }
+
+  return tiers[tiers.length - 1].fee
+}
+
 export const resolveFixedFeeDisplayPrice = (options: {
   amount: unknown
   currency: unknown

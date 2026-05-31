@@ -135,6 +135,7 @@ messages:
   cart_item_unavailable: Товар недоступен в вашем регионе
   leave_review: Оставить отзыв
   delivery_price: Стоимость доставки
+  cod_fee: Наложенный платёж
   delivery_vendor_price: По тарифам перевозчика
   products_total: Товара на сумму
   to_pay: К оплате
@@ -267,6 +268,7 @@ form:
     packeta_warehouse: Отделение/почтомат Zasilkovna
     packeta_address: Доставка курьером Zasilkovna
     messenger_address: Доставка курьером Messenger.cz
+    messenger_express: Экспресс-доставка Messenger.cz
     default_pickup: Самовывоз
     default_address: Доставка почтой
   payment:
@@ -472,6 +474,7 @@ delivery:
   novaposhta_warehouse: Отделение/почтомат Новой Почты
   novaposhta_address: Курьером Новой Почты
   messenger_address: Курьером Messenger.cz
+  messenger_express: Экспресс-курьером Messenger.cz
   default_pickup: Самовывоз
   from: от
   subtitle: Способы доставки зависят от выбранной страны. Измените страну доставки, чтобы увидеть доступные варианты для вашего региона.
@@ -500,6 +503,8 @@ payments:
   messenger_cod:
     title: Наложенный платеж Messenger.cz
     desc: При получении заказа картой или наличными
+    fee_label: 'Комиссия за наложенный платёж:'
+    up_to: до
   bank_transfer:
     title: Банковский перевод
     desc: Мы отправим вам электронное письмо с необходимой платёжной информацией, включая вариабельный символ, который необходимо указать при оплате. Платёжное поручение также можно оформить, отсканировав QR-код.

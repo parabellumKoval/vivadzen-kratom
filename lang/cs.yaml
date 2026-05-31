@@ -129,6 +129,7 @@ messages:
   cart_item_unavailable: Produkt není ve vašem regionu dostupný
   leave_review: Zanechat recenzi
   delivery_price: Cena dopravy
+  cod_fee: Dobírka
   delivery_vendor_price: Dle tarifů dopravce
   products_total: Hodnota zboží
   to_pay: K zaplacení
@@ -261,6 +262,7 @@ form:
     packeta_warehouse: Pobočka/box Zasilkovna
     packeta_address: Kurýr Zasilkovna
     messenger_address: Doručení kurýrem Messenger.cz
+    messenger_express: Expresní doručení Messenger.cz
     default_pickup: Osobní odběr
     default_address: Poštovní doručení
   payment:
@@ -465,6 +467,7 @@ delivery:
   novaposhta_warehouse: Pobočka/box Nova Poshta
   novaposhta_address: Kurýr Nova Poshta
   messenger_address: Kurýr Messenger.cz
+  messenger_express: Expresní kurýr Messenger.cz
   default_pickup: Osobní odběr
   from: od
   subtitle: Způsoby doručení závisí na zvolené zemi. Změňte zemi doručení a zobrazte dostupné možnosti pro váš region.
@@ -493,6 +496,8 @@ payments:
   messenger_cod:
     title: Dobírka Messenger.cz
     desc: Zaplaťte kartou nebo hotově při převzetí
+    fee_label: 'Poplatek za dobírku:'
+    up_to: do
   bank_transfer:
     title: Bankovní převod
     desc: Zašleme vám e-mailem platební údaje včetně variabilního symbolu. Platbu lze vytvořit také naskenováním QR kódu.

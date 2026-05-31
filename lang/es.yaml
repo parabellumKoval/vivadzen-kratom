@@ -128,6 +128,7 @@ messages:
   cart_item_unavailable: Producto no disponible en tu región
   leave_review: Dejar reseña
   delivery_price: Costo de envío
+  cod_fee: Contra reembolso
   delivery_vendor_price: Según tarifas del transportista
   products_total: Total de artículos
   to_pay: Importe a pagar
@@ -258,6 +259,7 @@ form:
     packeta_warehouse: Sucursal/locker de Zasilkovna
     packeta_address: Entrega por mensajero de Zasilkovna
     messenger_address: Entrega por mensajería Messenger.cz
+    messenger_express: Entrega exprés por Messenger.cz
     default_pickup: Recogida
     default_address: Envío postal
   payment:
@@ -407,6 +409,7 @@ delivery:
   novaposhta_warehouse: Sucursal/locker de Nova Poshta
   novaposhta_address: Por mensajero de Nova Poshta
   messenger_address: Por mensajería Messenger.cz
+  messenger_express: Por mensajería exprés Messenger.cz
   default_pickup: Recogida
   from: desde
   subtitle: Los métodos de entrega dependen del país seleccionado. Cambia el país de entrega para ver las opciones de tu región.
@@ -435,6 +438,8 @@ payments:
   messenger_cod:
     title: Contra reembolso Messenger.cz
     desc: Paga con tarjeta o efectivo al recibir
+    fee_label: 'Comisión por contra reembolso:'
+    up_to: hasta
   bank_transfer:
     title: Transferencia bancaria
     desc: Te enviaremos por correo los datos necesarios de pago, incluido el símbolo variable que debes indicar. También puedes generar la orden escaneando un código QR.

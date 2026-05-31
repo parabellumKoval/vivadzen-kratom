@@ -72,9 +72,9 @@ const STRING_FIELDS: Array<keyof SavedDeliveryAddress> = [
 
 const BOOLEAN_FIELDS: Array<keyof SavedDeliveryAddress> = ['is_main', 'main', 'default']
 
-const FULL_ADDRESS_METHODS = ['novaposhta_address', 'packeta_address', 'messenger_address', 'default_address']
-const HOUSE_REQUIRED_METHODS = ['novaposhta_address', 'messenger_address', 'default_address']
-const ZIP_REQUIRED_METHODS = ['novaposhta_address', 'packeta_address', 'messenger_address']
+const FULL_ADDRESS_METHODS = ['novaposhta_address', 'packeta_address', 'messenger_address', 'messenger_express', 'default_address']
+const HOUSE_REQUIRED_METHODS = ['novaposhta_address', 'messenger_address', 'messenger_express', 'default_address']
+const ZIP_REQUIRED_METHODS = ['novaposhta_address', 'packeta_address', 'messenger_address', 'messenger_express']
 const WAREHOUSE_METHODS = ['novaposhta_warehouse', 'packeta_warehouse']
 const PICKUP_SELECTION_METHODS = ['default_pickup']
 
