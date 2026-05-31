@@ -1,10 +1,15 @@
 import { useCartStore } from '~/store/cart'
 import {
+  buildDisplayPrice,
   normalizeCodCashTiers,
   resolveCurrencyCode,
-  resolveFixedFeeDisplayPrice,
   type ShippingDisplayPrice,
 } from '~/utils/shipping-pricing'
+
+const DEFAULT_MESSENGER_COD_TIERS = [
+  { max_amount: 1000, fee: 30 },
+  { max_amount: 999999, fee: 60 },
+]
 
 export const useMessengerCod = () => {
   const { get } = useSettings()
@@ -15,19 +20,12 @@ export const useMessengerCod = () => {
 
   const fallbackCurrency = computed(() => resolveCurrencyCode(currency.value, 'CZK'))
 
-  const vatOptions = computed(() => ({
-    currency: get('shipping.messenger.currency'),
-    fallbackCurrency: fallbackCurrency.value,
-    vatRate: get('shipping.messenger.vat_rate'),
-    vatIncluded: get('shipping.messenger.vat_included'),
-  }))
-
   const orderAmount = computed(() => cartStore.totalProducts || 0)
 
   const tiers = computed(() => {
-    return normalizeCodCashTiers(get('shipping.messenger.cod.cash_tiers')).map((tier) => ({
+    return normalizeCodCashTiers(get('shipping.messenger.cod.cash_tiers', DEFAULT_MESSENGER_COD_TIERS)).map((tier) => ({
       maxAmount: tier.maxAmount,
-      fee: resolveFixedFeeDisplayPrice({ amount: tier.fee, ...vatOptions.value }),
+      fee: buildDisplayPrice(tier.fee, get('shipping.messenger.currency'), fallbackCurrency.value),
     }))
   })
 
@@ -43,7 +41,7 @@ export const useMessengerCod = () => {
     const flat = Number(get('shipping.messenger.cod.cash_fee'))
     if (!Number.isFinite(flat)) return null
 
-    return resolveFixedFeeDisplayPrice({ amount: flat, ...vatOptions.value })
+    return buildDisplayPrice(flat, get('shipping.messenger.currency'), fallbackCurrency.value)
   })
 
   return { enabled, tiers, fee, currencyCode: fallbackCurrency }

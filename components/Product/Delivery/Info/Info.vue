@@ -141,14 +141,23 @@ const isValidQuote = (quote: QuoteRecord) => {
   return Boolean(quote?.currency && quote.currency !== 'XXX' && Number.isFinite(amount))
 }
 
+const normalizeEta = (value: unknown) => {
+  if (typeof value !== 'string') return null
+
+  const trimmed = value.trim()
+  return trimmed || null
+}
+
 const deliveryMeta = (item: MethodRecord) => {
   const quote = deliveryQuotes.value[item.key]
+  const eta = normalizeEta(item?.eta)
 
   if (isValidQuote(quote)) {
     return {
       kind: 'price' as const,
       amount: roundDownShippingAmount(Number(quote?.amount)),
       currency: String(quote?.currency || ''),
+      eta,
     }
   }
 
@@ -157,6 +166,7 @@ const deliveryMeta = (item: MethodRecord) => {
       kind: 'price' as const,
       amount: roundDownShippingAmount(Number(item.price.amount)),
       currency: String(item.price.currency || ''),
+      eta,
     }
   }
 
@@ -164,12 +174,14 @@ const deliveryMeta = (item: MethodRecord) => {
     return {
       kind: 'text' as const,
       text: String(item.price),
+      eta,
     }
   }
 
   return {
     kind: 'text' as const,
     text: t('kratom.product.calculated_at_checkout'),
+    eta,
   }
 }
 
@@ -230,6 +242,10 @@ const paymentMeta = (item: MethodRecord) => {
             </template>
             <template v-else>
               {{ deliveryMeta(item).text }}
+            </template>
+            <template v-if="deliveryMeta(item).eta">
+              <span class="product-delivery-info__meta-separator">•</span>
+              <span class="product-delivery-info__meta-eta">{{ deliveryMeta(item).eta }}</span>
             </template>
           </span>
         </div>
@@ -346,16 +362,26 @@ const paymentMeta = (item: MethodRecord) => {
   display: inline-flex;
   align-items: center;
   justify-content: flex-end;
+  flex-wrap: wrap;
   gap: 6px;
   color: #7e8679;
   font-size: 12px;
   line-height: 1.45;
   text-align: right;
   flex-shrink: 0;
+  overflow-wrap: anywhere;
 }
 
 .product-delivery-info__meta-label {
   color: #8c9388;
+}
+
+.product-delivery-info__meta-separator {
+  opacity: 0.5;
+}
+
+.product-delivery-info__meta-eta {
+  color: inherit;
 }
 
 :deep(.product-delivery-info__meta-price .value) {

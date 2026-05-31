@@ -58,6 +58,14 @@ const hasPrice = (item) => {
   return price !== undefined && price !== null && price !== ''
 }
 
+const hasEta = (item) => {
+  return typeof item?.eta === 'string' && item.eta.trim().length > 0
+}
+
+const hasSupplementalMeta = (item) => {
+  return hasPrice(item) || hasEta(item)
+}
+
 const isPriceObject = (item) => {
   const price = item?.price
   return Boolean(item?.isPriceObject && price && typeof price === 'object' && price.amount !== undefined)
@@ -96,12 +104,18 @@ const isPriceObject = (item) => {
         <template v-if="item.title">
           {{ item.title }}
         </template>
-        <div v-if="hasPrice(item)" class="tab-price">
-          <template v-if="isPriceObject(item)">
-            {{ t('delivery.from') }} <simple-price :value="item.price.amount" :currency-code="item.price.currency" />
+        <div v-if="hasSupplementalMeta(item)" class="tab-price">
+          <template v-if="hasPrice(item)">
+            <template v-if="isPriceObject(item)">
+              {{ t('delivery.from') }} <simple-price :value="item.price.amount" :currency-code="item.price.currency" />
+            </template>
+            <template v-else>
+              {{ item.price }}
+            </template>
           </template>
-          <template v-else>
-            {{ item.price }}
+          <template v-if="hasEta(item)">
+            <span v-if="hasPrice(item)" class="tab-price__separator">•</span>
+            <span class="tab-price__eta">{{ item.eta }}</span>
           </template>
         </div>
       </button>

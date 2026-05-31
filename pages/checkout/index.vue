@@ -899,6 +899,7 @@ hydrateOrderFromProfile()
 .kratom-checkout-main {
   display: grid;
   gap: 22px;
+  min-width: 0;
 }
 
 .form-grid {
@@ -973,6 +974,7 @@ hydrateOrderFromProfile()
 .kratom-checkout-step__body {
   display: grid;
   gap: 18px;
+  min-width: 0;
 }
 
 .kratom-checkout-step__summary {
@@ -1080,6 +1082,7 @@ hydrateOrderFromProfile()
 .kratom-checkout-addresses {
   display: grid;
   gap: 16px;
+  min-width: 0;
 }
 
 .kratom-checkout-addresses__header {
@@ -1087,6 +1090,10 @@ hydrateOrderFromProfile()
   align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
+
+  > * {
+    min-width: 0;
+  }
 }
 
 .kratom-checkout-addresses__actions {
@@ -1114,6 +1121,7 @@ hydrateOrderFromProfile()
 .kratom-checkout-addresses__grid {
   display: grid;
   gap: 12px;
+  min-width: 0;
 }
 
 .kratom-checkout-address {
@@ -1125,11 +1133,24 @@ hydrateOrderFromProfile()
   gap: 6px;
   text-align: left;
   color: #40503d;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
 
   strong {
     color: #1f2b1d;
     font-size: 16px;
     font-weight: 700;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  span {
+    display: block;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 
   &.is-active {

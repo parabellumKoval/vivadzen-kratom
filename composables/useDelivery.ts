@@ -53,6 +53,31 @@ export const useDelivery = () => {
   const providerTariffsLabel = computed(() => t('delivery.provider_tariffs'))
   const fromShopLabel = computed(() => t('delivery.from_shop'))
   const fallbackCurrency = computed(() => resolveCurrencyCode(currency.value, 'USD'))
+  const normalizeEta = (value: unknown) => {
+    if (typeof value !== 'string') return null
+
+    const trimmed = value.trim()
+    return trimmed || null
+  }
+
+  const resolveEta = (methodKey: string) => {
+    switch (methodKey) {
+      case 'packeta_warehouse':
+        return normalizeEta(get('shipping.zasilkovna.pickup_eta'))
+      case 'packeta_address':
+        return normalizeEta(get('shipping.zasilkovna.home_eta'))
+      case 'novaposhta_warehouse':
+        return normalizeEta(get('shipping.novaposhta.branch_eta'))
+      case 'novaposhta_address':
+        return normalizeEta(get('shipping.novaposhta.courier_eta'))
+      case 'messenger_address':
+        return normalizeEta(get('shipping.messenger.address_eta'))
+      case 'messenger_express':
+        return normalizeEta(get('shipping.messenger.express_eta'))
+      default:
+        return null
+    }
+  }
 
   const packetaPickupPrice = computed(() => {
     return resolveRateDisplayPrice({
@@ -160,7 +185,8 @@ export const useDelivery = () => {
         image: '/images/logo/zasilkovna.png',
         logo: '/images/logo/z-mini.png',
         price: packetaPickup || providerTariffsLabel.value,
-        isPriceObject: !!packetaPickup
+        isPriceObject: !!packetaPickup,
+        eta: resolveEta('packeta_warehouse'),
       }, 
       {
         key: 'packeta_address',
@@ -170,7 +196,8 @@ export const useDelivery = () => {
         image: '/images/logo/zasilkovna.png',
         logo: '/images/logo/z-mini.png',
         price: packetaHome || providerTariffsLabel.value,
-        isPriceObject: !!packetaHome
+        isPriceObject: !!packetaHome,
+        eta: resolveEta('packeta_address'),
       }, 
       {
         key: 'novaposhta_warehouse',
@@ -180,7 +207,8 @@ export const useDelivery = () => {
         image: '/images/logo/np.png',
         logo: '/images/logo/np-mini.png',
         price: novaposhtaWarehouse || providerTariffsLabel.value,
-        isPriceObject: !!novaposhtaWarehouse
+        isPriceObject: !!novaposhtaWarehouse,
+        eta: resolveEta('novaposhta_warehouse'),
       }, 
       {
         key: 'novaposhta_address',
@@ -190,7 +218,8 @@ export const useDelivery = () => {
         image: '/images/logo/np.png',
         logo: '/images/logo/np-mini.png',
         price: novaposhtaCourier || providerTariffsLabel.value,
-        isPriceObject: !!novaposhtaCourier
+        isPriceObject: !!novaposhtaCourier,
+        eta: resolveEta('novaposhta_address'),
       }, 
       {
         key: 'default_pickup',
@@ -214,7 +243,8 @@ export const useDelivery = () => {
         price: messengerAddress || providerTariffsLabel.value,
         isPriceObject: !!messengerAddress,
         meta: messengerAddress || providerTariffsLabel.value,
-        isMetaPriceObject: !!messengerAddress
+        isMetaPriceObject: !!messengerAddress,
+        eta: resolveEta('messenger_address'),
       },
       {
         key: 'messenger_express',
@@ -226,7 +256,8 @@ export const useDelivery = () => {
         price: messengerExpress || providerTariffsLabel.value,
         isPriceObject: !!messengerExpress,
         meta: messengerExpress || providerTariffsLabel.value,
-        isMetaPriceObject: !!messengerExpress
+        isMetaPriceObject: !!messengerExpress,
+        eta: resolveEta('messenger_express'),
       },
       {
         key: 'default_address',

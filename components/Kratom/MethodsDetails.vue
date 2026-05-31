@@ -58,6 +58,13 @@ const normalizeMeta = (method: Record<string, any>) => {
   return null
 }
 
+const normalizeEta = (value: unknown) => {
+  if (typeof value !== 'string') return null
+
+  const trimmed = value.trim()
+  return trimmed || null
+}
+
 const pageIntro = computed(() => {
   if (props.section !== 'delivery') {
     return null
@@ -101,6 +108,7 @@ const items = computed(() => {
       image: method.image || method.logo,
       description: deliveryDescription(method.key),
       meta: normalizeMeta(method),
+      eta: normalizeEta(method.eta),
       sections: (method.key === 'messenger_address' || method.key === 'messenger_express') ? messengerSections.value : [],
     }))
   }
@@ -111,6 +119,7 @@ const items = computed(() => {
     image: method.image || method.logo,
     description: content?.[method.key] || '',
     meta: normalizeMeta(method),
+    eta: null,
     sections: [],
   }))
 })
@@ -168,20 +177,24 @@ const note = computed(() => {
           </div>
           <div class="kratom-methods-details__card-copy">
             <h3 class="kratom-methods-details__card-title">{{ item.title }}</h3>
-            <div v-if="item.meta" class="kratom-methods-details__meta">
+            <div v-if="item.meta || item.eta" class="kratom-methods-details__meta">
               <simple-price
-                v-if="item.meta.kind === 'price'"
+                v-if="item.meta && item.meta.kind === 'price'"
                 :value="item.meta.amount"
                 :currency-code="item.meta.currency"
                 class="kratom-methods-details__meta-price"
               />
-              <template v-else>
+              <template v-else-if="item.meta">
                 {{ item.meta.text }}
+              </template>
+              <template v-if="item.eta">
+                <span v-if="item.meta" class="kratom-methods-details__meta-separator">•</span>
+                <span class="kratom-methods-details__meta-eta">{{ item.eta }}</span>
               </template>
             </div>
           </div>
         </div>
-        <p
+        <div
           v-if="item.description"
           class="kratom-methods-details__description"
           v-html="item.description"
@@ -317,9 +330,22 @@ const note = computed(() => {
 }
 
 .kratom-methods-details__meta {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
   color: #7e8679;
   font-size: 13px;
   line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.kratom-methods-details__meta-separator {
+  opacity: 0.5;
+}
+
+.kratom-methods-details__meta-eta {
+  color: inherit;
 }
 
 :deep(.kratom-methods-details__meta-price .value) {

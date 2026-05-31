@@ -61,10 +61,13 @@
   &-price {
     display: flex;
     align-items: baseline;
+    flex-wrap: wrap;
     gap: 4px;
     font-size: 12px;
     line-height: 1.2;
     color: $color-3;
+    overflow-wrap: anywhere;
+    word-break: break-word;
 
     :deep(.price) {
       display: inline-flex;
@@ -76,5 +79,13 @@
         font-weight: 500;
       }
     }
+  }
+
+  &-price__separator {
+    opacity: 0.55;
+  }
+
+  &-price__eta {
+    color: inherit;
   }
 }
